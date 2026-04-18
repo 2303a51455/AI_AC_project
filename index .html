@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Study Planner</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Login Form -->
+    <div class="login-container" id="loginContainer">
+        <div class="login-form">
+            <h1>AI Study Planner</h1>
+            <h2>Welcome! Please Login</h2>
+
+            <div class="login-input-group">
+                <div class="input-field">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" placeholder="Enter your username">
+                </div>
+                <div class="input-field">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" placeholder="Enter your password">
+                </div>
+            </div>
+
+            <div class="error-message" id="errorMessage"></div>
+
+            <button class="btn-login" onclick="login()">Login</button>
+        </div>
+    </div>
+
+    <!-- Main Study Planner (Hidden initially) -->
+    <div class="container" id="mainContainer" style="display: none;">
+        <h1>AI Study Planner</h1>
+
+        <div class="input-section">
+            <div class="input-group">
+                <div>
+                    <label for="subject">Subject:</label>
+                    <input type="text" id="subject" placeholder="Enter subject name">
+                </div>
+                <div>
+                    <label for="examDate">Exam Date:</label>
+                    <input type="date" id="examDate">
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button class="btn-add" onclick="addSubject()">Add Subject</button>
+                <button class="btn-generate" onclick="generatePlan()">Generate Plan</button>
+            </div>
+        </div>
+
+        <div class="subjects-list" id="subjectsList">
+            <h3>Selected Subjects</h3>
+            <div id="subjectsContainer"></div>
+        </div>
+
+        <div class="plan-section">
+            <h2>Study Plan</h2>
+            <div class="study-plan" id="studyPlan">
+                <div id="planContent"></div>
+            </div>
+            <div class="empty-state" id="emptyState">
+                No study plan generated yet. Add subjects and generate a plan to get started!
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
