@@ -1,9 +1,37 @@
-let topics = [];
+// LOGIN CHECK
+window.onload = () => {
+    if (localStorage.getItem("login") === "true") {
+        showApp();
+    }
+};
 
-// Add new row
+// LOGIN
+function login() {
+    const u = document.getElementById("loginUser").value;
+    const p = document.getElementById("loginPass").value;
+
+    if (u === "admin" && p === "12345") {
+        localStorage.setItem("login", "true");
+        showApp();
+    } else {
+        document.getElementById("error").innerText = "Invalid credentials";
+    }
+}
+
+// SHOW APP
+function showApp() {
+    document.getElementById("loginPage").style.display = "none";
+    document.getElementById("app").style.display = "block";
+}
+
+// LOGOUT
+function logout() {
+    localStorage.removeItem("login");
+    location.reload();
+}
+
+// ADD TOPIC ROW
 function addRow() {
-    const container = document.getElementById("topicsContainer");
-
     const div = document.createElement("div");
     div.className = "topicRow";
 
@@ -17,75 +45,69 @@ function addRow() {
         <button class="remove" onclick="this.parentElement.remove()">X</button>
     `;
 
-    container.appendChild(div);
+    document.getElementById("topicsContainer").appendChild(div);
 }
 
-// Generate plan
+// GENERATE PLAN
 function generatePlan() {
 
     const name = document.getElementById("name").value;
     const examDate = new Date(document.getElementById("examDate").value);
-    const hours = document.getElementById("hours").value;
+    const hours = parseFloat(document.getElementById("hours").value);
 
     const rows = document.querySelectorAll(".topicRow");
 
-    if (rows.length === 0) {
-        alert("Add at least one topic");
-        return;
-    }
-
     let topics = [];
 
-    rows.forEach(row => {
-        const topic = row.children[0].value;
-        const difficulty = row.children[1].value;
+    rows.forEach(r => {
+        let t = r.children[0].value;
+        let d = r.children[1].value;
 
-        if (topic) {
-            topics.push({ topic, difficulty });
+        if (t) {
+            let weight = d === "Hard" ? 3 : d === "Medium" ? 2 : 1;
+            topics.push({ t, d, weight });
         }
     });
 
     const today = new Date();
-    const days = Math.ceil((examDate - today) / (1000 * 60 * 60 * 24));
+    const days = Math.ceil((examDate - today) / (1000*60*60*24));
 
     if (days <= 0) {
-        alert("Invalid date");
+        alert("Choose valid future date");
         return;
     }
 
-    let output = `
-        <div class="planCard">
+    let totalWeight = topics.reduce((sum, x) => sum + x.weight, 0);
+
+    // SUMMARY
+    document.getElementById("summary").innerHTML = `
         <h2>Plan for ${name}</h2>
-        <p>${days} days | ${hours} hrs/day</p>
-        </div>
+        <p>${days} days • ${hours} hrs/day • ${topics.length} topics</p>
     `;
 
-    // SPLIT LOGIC (MULTIPLE SUBJECTS PER DAY)
+    let output = "";
+
     for (let d = 1; d <= days; d++) {
 
-        output += `<div class="planCard"><h3>Day ${d}</h3>`;
+        output += `<div class="planDay"><h3>Day ${d}</h3>`;
 
-        topics.forEach(t => {
+        topics.forEach(x => {
 
-            let time = hours / topics.length;
-
-            if (t.difficulty === "Hard") time += 0.5;
-            if (t.difficulty === "Easy") time -= 0.2;
+            let time = (x.weight / totalWeight) * hours;
 
             output += `
-                <p>📘 ${t.topic} 
-                <span class="badge">${t.difficulty}</span>
+                <p>📘 ${x.t} 
+                <span class="badge ${x.d.toLowerCase()}">${x.d}</span>
                 - ${time.toFixed(1)} hrs</p>
             `;
         });
 
-        output += `
-            <p>⏱ Break: 10 min after 45 min study</p>
-        </div>`;
+        output += `<p>⏱ Break: 10 min after 45 min study</p>`;
+        output += `</div>`;
     }
 
-    document.getElementById("output").innerHTML = output;
+    document.getElementById("planOutput").innerHTML = output;
 }
 
-// Default one row
+// DEFAULT ONE ROW
 addRow();
