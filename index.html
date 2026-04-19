@@ -3,27 +3,54 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Study Planner</title>
+<title>Smart Study Co-Pilot</title>
 <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<div class="container">
+<!-- ================= LOGIN ================= -->
+<div id="loginPage" class="login-page">
+    <div class="login-card">
+        <h2>🚀 Smart Study Co-Pilot</h2>
 
-    <h1>🚀 AI Study Planner</h1>
+        <input type="text" id="loginUser" placeholder="Username">
+        <input type="password" id="loginPass" placeholder="Password">
+
+        <p id="error" class="error"></p>
+
+        <button onclick="login()">Login</button>
+    </div>
+</div>
+
+<!-- ================= MAIN APP ================= -->
+<div id="app" style="display:none;">
+
+    <!-- NAVBAR -->
+    <div class="navbar">
+        <h2>🤖 Smart Study Co-Pilot</h2>
+        <button onclick="logout()">Logout</button>
+    </div>
+
+    <!-- HERO SECTION -->
+    <div class="hero">
+        <h1>🚀 AI-powered study coach</h1>
+        <p>Add topics, choose difficulty, and generate a smart plan with breaks.</p>
+    </div>
 
     <!-- FORM -->
     <div class="card">
 
-        <input type="text" id="name" placeholder="Your Name">
+        <h3>Build your plan</h3>
+
+        <input type="text" id="name" placeholder="Your name">
 
         <div class="row">
             <input type="date" id="examDate">
-            <input type="number" id="hours" placeholder="Daily Study Hours">
+            <input type="number" id="hours" placeholder="Daily study hours">
         </div>
 
-        <h3>Add Topics</h3>
-
+        <h4>Topics</h4>
         <div id="topicsContainer"></div>
 
         <button onclick="addRow()">+ Add Topic</button>
@@ -32,8 +59,11 @@
 
     </div>
 
-    <!-- OUTPUT -->
-    <div id="output"></div>
+    <!-- SUMMARY -->
+    <div id="summary" class="card"></div>
+
+    <!-- PLAN OUTPUT -->
+    <div id="planOutput"></div>
 
 </div>
 
